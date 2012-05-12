@@ -76,6 +76,7 @@ class PThread
 		inline void unlock()
 		{
 			pthread_mutex_unlock(&m_mutex);
+
 		}
 
 /*
