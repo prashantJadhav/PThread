@@ -14,8 +14,13 @@ namespace Pthread
 		Mutex();
 		~Mutex();
 		void lock();
-		void unlock();
+		//void unlock();
 		bool tryLock();
+inline void unlock()
+{
+        pthread_mutex_unlock(&m_mutexHandle);
+}
+
 
   };
 }//Pthread

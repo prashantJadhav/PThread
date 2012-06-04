@@ -60,7 +60,7 @@ class PThread
 		bool isJoinable();
 
 
-		int getID();
+		static int getID();
 		void setID(int );
 
 		unsigned showCpuCores();

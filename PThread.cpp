@@ -91,7 +91,8 @@ Method to get the id of the thread
 */
 int PThread::getID()
  {
-	return m_threadID;
+	//return m_threadID;
+	return pthread_self();
  }
 
 void PThread::setID(int id)
