@@ -31,7 +31,7 @@ Mutex mu;
 pt.join();
 pt1.join();
 
-	cout<<"************************Tesssting thread pool ************************"<<endl;
+	cout<<"************************pTesssting thread pool ************************"<<endl;
 
 	ThreadPool *tp=new ThreadPool(5);
 
