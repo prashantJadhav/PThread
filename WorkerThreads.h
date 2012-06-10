@@ -16,13 +16,19 @@ namespace Pthread{
 		int id;
 	public:
 		virtual void run()=0;
-		virtual ~WorkerThread();
+		//virtual ~WorkerThread();
+		~WorkerThread()
+		{
+			id=0;
+		}
 		WorkerThread(int id):id(id)
 		{
 		}
+		
 		WorkerThread()
 		{
 		}
+
  };	
 }//namespace
 

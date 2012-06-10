@@ -14,11 +14,11 @@ namespace Pthread{
 
    class TestPool : public WorkerThread
    {
-	public:
+	private:
 		int a;
 
-	private:
-		TestPool();
+	public:
+		TestPool(int );
 		~TestPool();
 		void run();
 	

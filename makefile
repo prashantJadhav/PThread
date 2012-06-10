@@ -7,9 +7,9 @@ logObj:=/media/songs/linnnux/worm/src/Logger.o
 
 all : $(EXECUTABLE)
 
-$(EXECUTABLE) : thread.o Mutex.o ThreadPool.o TestPool.o FileOperations.o #WorkerThread.o
+$(EXECUTABLE) : thread.o Mutex.o ThreadPool.o TestPool.o FileOperations.o Semaphore.o #WorkerThread.o
 		#g++ -shared -lcurl -ldl -o $(EXECUTABLE) WebCraw.o /media/songs/linnnux/worm/src/Logger.o 
-		g++  $(INCLUDEFLAG) -g -lcurl -lpcrecpp -lhtmlcxx -o $(EXECUTABLE) thread.o Mutex.o ThreadPool.o FileOperations.o /media/songs/linnnux/worm/src/Logger.o thread_main.cpp 
+		g++  $(INCLUDEFLAG) -g -lcurl -lpcrecpp -lhtmlcxx -o $(EXECUTABLE) thread.o Mutex.o ThreadPool.o FileOperations.o TestPool.o Semaphore.o /media/songs/linnnux/worm/src/Logger.o thread_main.cpp 
 
 thread.o :  
 	   #g++ $(INCLUDEFLAG) -c WebCrawlerPlugin.cpp -o WebCraw.o
@@ -24,8 +24,14 @@ FileOperations.o :
 ThreadPool.o :
 	g++  $(INCLUDEFLAG) -c ThreadPool.cpp -o ThreadPool.o 
 
-#WorkerThread.o :
-#	g++ $(INCLUDEFLAG) -c WorkerThread.cpp -o WorkerThread.o
+WorkerThread.o :
+	g++ $(INCLUDEFLAG) -c WorkerThread.cpp -o WorkerThread.o
+
+TestPool.o :
+	g++ $(INCLUDEFLAG) -c TestPool.cpp -o TestPool.o
+
+Semaphore.o :
+	g++ $(INCLUDEFLAG) -c Semaphore.cpp -o Semaphore.o
 
 clean : 
 	rm -rf *.so *.o ${EXECUTABLE}

@@ -17,9 +17,6 @@ ThreadPool::ThreadPool()
 ThreadPool::ThreadPool(int tmp):m_maxThreads(tmp)
  {
         std::cout<<"ThreadPool11::ThreadPool"<<endl;
-	m_mutex.lock();
-	incompleteWork = 0;
-
 
 	if(tmp < 1)
 		m_maxThreads=1;
@@ -28,18 +25,12 @@ ThreadPool::ThreadPool(int tmp):m_maxThreads(tmp)
 
 	cout<<"initial size of vector is "<<m_workerThreadsVec.size();
 
-	sem_init(&threads,0,m_maxThreads);
-	m_workSemaphore=new Semaphore();
+	m_mutex.lock();
+
 	m_workerThreadsVec.resize(m_maxThreads,NULL);
 	m_mutex.unlock();
 
  }
-
-
-ThreadPool::~ThreadPool()
-{
-	cout<<"ThreadPool::DTOR"<<endl;
-}
 
 
 /*@author prashant
@@ -65,7 +56,7 @@ makes yse of a workertrhesClass interface wwhic uplenebts this meth
 )(*/
 void ThreadPool::run()
  {
-	std::cout<<"*********************ThreadPool::run"<<endl;
+	std::cout<<"ThreadPool::run"<<endl;
 	//do some execution here
  }
 
@@ -85,18 +76,10 @@ bool ThreadPool::allocateWork(WorkerThread *workerThread)
 	//relea e mutex
 
 	m_mutex.lock();
-	incompleteWork++;
-	 m_mutex.unlock();
-	int val;
-	sem_getvalue(&threads,&val);
-	cout<<"niiiiiiiiiiiiiiiiiiiiiceeeeeeeee="<<val<<endl;
-	sem_wait(&threads);
-	m_mutex.lock();
-	//sem_post(&threads); //wrking
 	//m_workerThreadsVec.push_back(&workerThread);
 	m_workerThreadsVec.push_back(workerThread);
 	cout<<"PPPkool="<<m_workerThreadsVec.size();
-	m_workSemaphore->post();
+
 	m_mutex.unlock();
 	return true ;
 	
@@ -112,15 +95,7 @@ bool ThreadPool::get(WorkerThread **workerThread)
  {
 	std::cout<<"ThreadPool::get"<<endl;
 
-	//sem_wait(&threads);
 
-	m_workSemaphore->wait();	
-int val;
-        sem_getvalue(&threads,&val);
-        cout<<"RPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPniiiiiceeeeeeeee="<<val<<endl;
-
-	//sem_post(&threads);
-	std::cout<<"****************************************************kooool************************"<<endl;
 	m_mutex.lock();
 	//if(!m_workerThreadsVec.empty())
 	 //{
@@ -130,10 +105,8 @@ int val;
 	//}
 	cout<<"kool="<<m_workerThreadsVec.size();
 
-	//worker->run();
-
 	*workerThread=worker;
-	sem_post(&threads);
+
 	m_mutex.unlock();
 
 	return true;
@@ -164,39 +137,15 @@ void ThreadPool::execute(void *args)
 
 	while(((ThreadPool *)args)->get(&worker))
 	{
-
-		((ThreadPool *)args)->m_mutex.lock();
 		if(worker)
 		{
 			cout<<"]n]nsdfsdfsdfsdfsdfsfsfsf"<<endl;
 
-			//sleep(20);
+			sleep(2);
 			worker->run();
 			//delete worker ;
 			worker = NULL;
 		}
-
-		((ThreadPool *)args)->incompleteWork--;
-
-
-		((ThreadPool *)args)->m_mutex.unlock();
 	}
- }
-
-void ThreadPool::clean(int maxPollSecs)
- {
-	while( incompleteWork>0 )
-        {
-                cout << "Work is still incomplete=" << incompleteWork << endl;
-                sleep(maxPollSecs);
-        }
-        cout << "All Done!! Wow! That was a lot of work!" << endl;
- //       sem_destroy(&availableWork);
-        sem_destroy(&threads);
-	delete m_workSemaphore;
-//        pthread_mutex_destroy(&mutexSync);
-//        pthread_mutex_destroy(&mutexWorkCompletion);
-
- 
  }
 //}

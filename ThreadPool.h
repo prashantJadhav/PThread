@@ -14,6 +14,8 @@ hope t wrks
 
 #include "PThread.h"
 #include "WorkerThreads.h"
+#include "Mutex.h"
+#include "Semaphore.h"
 
 namespace Pthread{
 
@@ -25,6 +27,8 @@ namespace Pthread{
 		int m_maxThreads,m_minThread;
 		//typedef std::vector<PThread *> workerThreadVec;
 		typedef std::vector<WorkerThread *> workerThreadVec;
+		int incompleteWork;
+
 		
 	public:
 		ThreadPool();
@@ -32,12 +36,17 @@ namespace Pthread{
 		~ThreadPool();
 		//workerThreads m_threads;
 		void run();
-		void execute();
+		static void execute(void *);
 		bool allocateWork(WorkerThread *);
 		void initializeThreads();		
-		void get(WorkerThread *);
+		bool get(WorkerThread **);
+		void clean(int);
 		
 		workerThreadVec m_workerThreadsVec ;
+
+		Mutex m_mutex;
+		Semaphore *m_workSemaphore;
+		sem_t threads;
 
   };
 }//naemspace

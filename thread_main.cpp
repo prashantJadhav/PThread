@@ -1,8 +1,10 @@
 #include<iostream>
+
 #include"PThread.h"
 #include "ThreadPool.h"
 #include "FileOperations.h"
 #include "Mutex.h"
+#include "TestPool.h"
 
 
 using namespace std;
@@ -37,19 +39,40 @@ pt1.join();
 
 	tp->initializeThreads();
 
+	for(unsigned int i=0;i<10;i++)
+	{
+		TestPool *worker = new TestPool(2);
+	
+		tp->allocateWork(worker);
+
+	}
+
+	// destroyPool(int maxPollSecs)
+        // Before actually destroying the ThreadPool, this function checks if all the pending work is completed.
+        // If the work is still not done, then it will check again after maxPollSecs
+        // The default value for maxPollSecs is 2 seconds.
+        // And ofcourse the user is supposed to adjust it for his needs.
+        
+    tp->clean(2);
+
+  //  time_t t2=time(NULL);
+    //cout << t2-t1 << " seconds elapsed\n" << endl;
+        delete tp;
+
 	
 	cout<<"************************Tesssting thread Write************************"<<endl;
 
 	try
  	{
 
-	      FileOperations fo;
+	cout<<"************************Tesssting thread Write************************"<<endl;
+//	      FileOperations fo;
 
 		// PThread pt(fo.print2File);
 		 //PThread pt(FileOperations::print2File,0);
 		 //PThread pt(reaad,(void *)&fo);
 
-		fo.setReportFile("tank");
+/*		fo.setReportFile("tank");
 
 		fo.setHtmlBuffer("hi how r u \n m fine thnk u \n <b>nd kkool</b>");
 
@@ -62,7 +85,7 @@ pt1.join();
 		pt.join();
 		pt2.join();
 
-	
+*/	
 	}
 	catch(exception& e)
 	{

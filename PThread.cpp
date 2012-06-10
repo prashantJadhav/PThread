@@ -14,7 +14,7 @@ PThread::PThread()
 
 PThread::~PThread()
  {
-	cout<<"in DTOR"<<endl;
+	cout<<"in PTHREAD::DTOR"<<endl;
 	pthread_mutex_destroy(&m_mutex);
  }
 
@@ -61,7 +61,7 @@ cout<<"PThread::wrapperFunctio"<<endl;
 
 	try
 	{
-		cout<<"hiiiiiiiiiiiii"<<endl;
+		//cout<<"hiiiiiiiiiiiii"<<endl;
 		function->mFunction(function->mArg);
 	}
 	catch(...)
